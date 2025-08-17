@@ -29,7 +29,7 @@ The app also supports **keyboard shortcuts** for faster control.
 ## ⚙️ Setup Instructions
 1. Clone or download this repository:
    ```bash
-   git clone https://github.com/username/stopwatch-lap-timer.git
+   git clone https://github.com/raihanstimik/timer-v2.git
 2. Open index.html in your browser.
 3. Start using the stopwatch with buttons or keyboard shortcuts.
 
