@@ -1,0 +1,155 @@
+:root {
+    --color-bg: #1e2127;
+    --color-fg: #ececec;
+    --color-accent: #374d6f;
+    --color-accent2: #4e7ac7;
+    --color-shadow: rgba(30,33,39,0.5);
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #232526 0%, #414345 100%);
+    color: var(--color-fg);
+}
+
+.stopwatch {
+    background: var(--color-bg);
+    padding: 32px 24px 24px 24px;
+    border-radius: 18px;
+    box-shadow: 0 8px 32px 0 var(--color-shadow);
+    min-width: 320px;
+    max-width: 90vw;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+
+.controls button {
+    font-size: 1.1rem;
+    padding: 12px 28px;
+    border: none;
+    border-radius: 7px;
+    background: linear-gradient(90deg, var(--color-accent), var(--color-accent2));
+    color: var(--color-fg);
+    margin: 0 2px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px 0 rgba(52,77,111,0.15);
+    transition: background 0.2s, transform 0.1s;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+.controls button:hover, .controls button:focus {
+    background: linear-gradient(90deg, var(--color-accent2), var(--color-accent));
+    transform: translateY(-2px) scale(1.04);
+    outline: none;
+}
+
+#display {
+    font-size: 2.8rem;
+    font-family: 'Roboto Mono', monospace;
+    letter-spacing: 2px;
+    background: rgba(255,255,255,0.04);
+    padding: 18px 36px;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    box-shadow: 0 1px 4px 0 rgba(52,77,111,0.08);
+    user-select: none;
+}
+
+.laps {
+    width: 100%;
+    max-width: 320px;
+    margin-top: 10px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 8px;
+    padding: 10px 0 6px 0;
+    box-shadow: 0 1px 4px 0 rgba(52,77,111,0.06);
+}
+
+.laps ul {
+    list-style: none;
+    padding: 0 18px;
+    margin: 0;
+    max-height: 180px;
+    overflow-y: auto;
+}
+
+.laps li {
+    margin: 6px 0;
+    font-size: 1.05rem;
+    padding: 4px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    color: #b3c7e6;
+}
+.laps li:last-child {
+    border-bottom: none;
+}
+
+@media (max-width: 600px) {
+    .stopwatch {
+        padding: 16px 4vw 12px 4vw;
+        min-width: unset;
+        width: 98vw;
+        border-radius: 10px;
+    }
+    #display {
+        font-size: 2rem;
+        padding: 12px 8vw;
+    }
+    .laps {
+        max-width: 98vw;
+        padding: 6px 0 2px 0;
+    }
+    .laps ul {
+        padding: 0 8px;
+    }
+    .controls button {
+        font-size: 1rem;
+        padding: 10px 12px;
+    }
+}
+
+const lapsContainer = document.getElementById('laps').querySelector('ul');
+
+function renderLaps() {
+    lapsContainer.innerHTML = '';
+    lapTimes.forEach((t, i) => {
+        const li = document.createElement('li');
+        li.textContent = `Lap ${i + 1}: ${formatTime(t)}`;
+        lapsContainer.appendChild(li);
+    });
+}
+
+function recordLap() {
+    lapTimes.push(time);
+    renderLaps();
+}
+
+function resetTime() {
+    clearInterval(interval);
+    interval = null;
+    time = 0;
+    lapTimes = [];
+    updateDisplay();
+    renderLaps();
+    startPauseBtn.textContent = 'Start';
+}
+
+renderLaps(); // Set lap awal
